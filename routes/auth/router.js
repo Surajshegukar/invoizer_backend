@@ -15,13 +15,21 @@ require('dotenv').config()
 
 router.post('/register', async(req,res) => {
     try {
-        const {name,email,password} = req.body;
+        const {name,email,password,code} = req.body;
         if(!name || !email || !password){
             return res.status(400).json({
                 success:false,
                 message:'Please provide name,email and password'
             });
         }
+
+        if(code !== process.env.CODE){
+            return res.status(400).json({
+                success:false,
+                message:'Invalid code'
+            });
+        }
+
 
         const checkUser = await UserModel.findOne({
             email

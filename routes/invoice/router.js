@@ -19,11 +19,14 @@ router.post('/add-invoice',fetchUser, async(req, res) => {
         } = req.body;
     
         if (!invoiceNumber || !invoiceDate || !studentId || !items) {
-            return res.status(400).json({ data: 'All fields are required' });
+            return res.status(400).json({success:false,
+                 data: 'All fields are required' });
         }
     
         if (items.length === 0) {
-            return res.status(400).json({ data: 'Items are required' });
+            return res.status(400).json({ 
+                success:false,data: 'Items are required' });
+                
         }
     
         const invoice = new InvoiceModel({
@@ -42,16 +45,7 @@ router.post('/add-invoice',fetchUser, async(req, res) => {
     
         return res.status(200).json({
             data: 'Invoice created successfully',
-            data: {
-                invoiceNumber,
-                invoiceDate,
-                studentId,
-                items,
-                totalAmount,
-                totalDiscountedAmount,
-                recivedAmount,
-                balanceAmount
-            }
+            success:true,
         });
     }
     catch(error){
